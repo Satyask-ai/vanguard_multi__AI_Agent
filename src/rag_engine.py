@@ -1,10 +1,11 @@
 import os
+from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI, ChatOpenAI, AzureOpenAIEmbeddings, OpenAIEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
-from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -15,7 +16,7 @@ azure_api_key = os.getenv("AZURE_OPENAI_API_KEY")
 azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
 
 if azure_api_key and azure_api_key != "placeholder_key":
-    print("🔹 RAG Engine: Using Azure OpenAI (Production)")
+    print("RAG Engine: Using Azure OpenAI (Production)")
     embeddings = AzureOpenAIEmbeddings(
         azure_deployment=os.getenv("AZURE_EMBEDDING_DEPLOYMENT"),
         openai_api_version="2023-05-15",
@@ -28,7 +29,7 @@ if azure_api_key and azure_api_key != "placeholder_key":
         temperature=0
     )
 else:
-    print("🔹 RAG Engine: Using Standard OpenAI (Dev)")
+    print("RAG Engine: Using Standard OpenAI (Dev)")
     embeddings = OpenAIEmbeddings()
     llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
@@ -68,9 +69,9 @@ def get_rag_chain(user_role: str):
     if user_role == "intern":
         # Interns CANNOT see confidential docs
         search_kwargs["filter"] = {"access_level": {"$ne": "confidential"}}
-        print(f"🔒 Security Alert: Restrictions applied for '{user_role}'")
+        print(f"Security Alert: Restrictions applied for '{user_role}'")
     else:
-        print(f"🔓 Access Granted: Full visibility for '{user_role}'")
+        print(f"Access Granted: Full visibility for '{user_role}'")
     
     retriever = vector_db.as_retriever(search_kwargs=search_kwargs)
 

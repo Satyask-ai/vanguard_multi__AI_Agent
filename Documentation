@@ -1,8 +1,9 @@
 .venv\Scripts\activate
 uv add langchain-chroma
-uv add langchain-text-splitters  
+uv add langchain-text-splitters
 uv add langchain langchain-openai langchain-community chromadb pdfplumber
 uv add fastapi uvicorn pydantic python-dotenv
- uv run src/api.py 
- uv run test_brain.py                       
- uv run src/ingest.py                       
+uv run src/api.py
+uv run test_brain.py
+uv run src/ingest.py
+http://localhost:8000/docs
